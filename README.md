@@ -2,7 +2,7 @@
 
 An open-source, standalone touchscreen jukebox built on an ESP32-S3. No WiFi, no phone, no router — everything is controlled directly on the device's touchscreen: browse songs from a microSD card, play them through a real I2S audio path, pick from 12 UI themes, and play a couple of built-in games (Pinball, Air Hockey) without interrupting the music.
 
-![Juckbox](media/build-04-pacman.jpg)
+<img src="media/build-04-pacman.jpg" alt="Juckbox" width="480">
 
 This repository is the open-source release of the project: firmware, enclosure/cutting files, and a full bill of materials, so anyone can build their own.
 
@@ -20,24 +20,29 @@ This repository is the open-source release of the project: firmware, enclosure/c
 
 ## Gallery
 
-![Finished Pac-Man themed build, running with backlit arcade buttons](media/build-04-pacman.jpg)
+<img src="media/build-04-pacman.jpg" alt="Finished Pac-Man themed build, running with backlit arcade buttons" width="360">
+
 *Pac-Man theme, running*
 
-![Finished build painted as Squidward's pineapple house](media/build-05-finished.jpg)
+<img src="media/build-05-finished.jpg" alt="Finished build painted as Squidward's pineapple house" width="360">
+
 *Squidward's house theme*
 
-![Pineapple-themed build in progress](media/build-03-pineapple.jpg)
+<img src="media/build-03-pineapple.jpg" alt="Pineapple-themed build in progress" width="360">
+
 *Pineapple theme, in progress*
 
-![Raw laser-cut enclosure before painting](media/build-02-raw-enclosure.jpg)
+<img src="media/build-02-raw-enclosure.jpg" alt="Raw laser-cut enclosure before painting" width="360">
+
 *Raw laser-cut enclosure*
 
-![Hand-painting a laser-cut enclosure during a build workshop](media/build-01-painting.jpg)
+<img src="media/build-01-painting.jpg" alt="Hand-painting a laser-cut enclosure during a build workshop" width="360">
+
 *Painting at a build workshop*
 
 ### Demo video
 
-[![Watch the demo video](media/build-05-finished.jpg)](media/demo.mp4)
+[<img src="media/build-05-finished.jpg" alt="Watch the demo video" width="360">](media/demo.mp4)
 
 *(GitHub doesn't inline-embed video committed to a repo — click the image above, or go straight to [`media/demo.mp4`](media/demo.mp4), and GitHub's file viewer will play it.)*
 
