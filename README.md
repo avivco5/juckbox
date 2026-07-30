@@ -11,7 +11,7 @@ This repository is the open-source release of the project: firmware, enclosure/c
 | Folder | Contents |
 |---|---|
 | [`firmware/`](firmware) | PlatformIO project — main ESP32-S3 firmware (display, touch, audio, songs, themes, games). Start here — see [firmware/README.md](firmware/README.md) for hardware pinout, build/flash instructions, and known limitations. |
-| [`hardware/enclosure/`](hardware/enclosure) | 3D-printable/laser-cut enclosure files (`Cube.step`, `Cube.stl`, `jukebox.svg`) |
+| [`hardware/enclosure/`](hardware/enclosure) | 3D-printable/laser-cut enclosure files (`Cube.step`, `Cube.stl`, `jukebox.svg`) — base geometry generated with [Boxes.py](https://www.festi.info/boxes.py/), then modified |
 | [`hardware/bom/`](hardware/bom) | Full bill of materials with AliExpress part links and prices — see [COMPONENTS.md](hardware/bom/COMPONENTS.md) for a plain-text version |
 | [`extras/simon-says/`](extras/simon-says) | Standalone Simon Says PlatformIO project, a smaller side project built alongside the jukebox |
 | [`design/`](design) | Concept art and case-design references used while designing the enclosure |
