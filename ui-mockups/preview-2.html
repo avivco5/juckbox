@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>תרגיל סדנה - החלפת אייקון לערכת נושא</title>
+  <style>
+    :root {
+      --bg: #f4f7fb;
+      --paper: #ffffff;
+      --ink: #183047;
+      --muted: #5f7387;
+      --primary: #1565c0;
+      --primary-soft: #e8f1fb;
+      --accent: #00a884;
+      --accent-soft: #e5f8f3;
+      --warning: #f39c12;
+      --warning-soft: #fff5df;
+      --danger: #d64545;
+      --danger-soft: #fff0f0;
+      --bonus: #7b52c7;
+      --bonus-soft: #f1ebff;
+      --code-bg: #111827;
+      --code-ink: #e5edf7;
+      --line: #dbe5ef;
+      --shadow: 0 14px 36px rgba(31, 56, 82, 0.10);
+      --radius: 22px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at top right, rgba(21, 101, 192, 0.10), transparent 28%),
+        radial-gradient(circle at bottom left, rgba(0, 168, 132, 0.10), transparent 24%),
+        var(--bg);
+      color: var(--ink);
+      font-family: Arial, "Noto Sans Hebrew", sans-serif;
+      line-height: 1.65;
+    }
+
+    .page {
+      width: min(1120px, calc(100% - 28px));
+      margin: 28px auto 48px;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(135deg, #0d47a1, #1976d2 60%, #00a884);
+      color: #fff;
+      border-radius: 28px;
+      padding: 38px 38px 34px;
+      box-shadow: var(--shadow);
+    }
+
+    .hero::before,
+    .hero::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.10);
+    }
+
+    .hero::before {
+      width: 190px;
+      height: 190px;
+      left: -56px;
+      top: -74px;
+    }
+
+    .hero::after {
+      width: 120px;
+      height: 120px;
+      right: 56px;
+      bottom: -56px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.16);
+      border: 1px solid rgba(255,255,255,0.24);
+      border-radius: 999px;
+      padding: 7px 13px;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(30px, 5vw, 54px);
+      line-height: 1.15;
+      letter-spacing: -0.6px;
+    }
+
+    .hero p {
+      margin: 0;
+      max-width: 820px;
+      font-size: 18px;
+      color: rgba(255,255,255,0.92);
+    }
+
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    .hero-tag {
+      background: rgba(255,255,255,0.13);
+      border: 1px solid rgba(255,255,255,0.22);
+      border-radius: 14px;
+      padding: 8px 12px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .section {
+      margin-top: 24px;
+    }
+
+    .intro-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 18px;
+    }
+
+    .panel {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: 0 8px 22px rgba(31, 56, 82, 0.06);
+    }
+
+    .panel h2,
+    .panel h3 {
+      margin-top: 0;
+      line-height: 1.25;
+    }
+
+    .goal {
+      border-top: 6px solid var(--accent);
+    }
+
+    .files {
+      border-top: 6px solid var(--primary);
+    }
+
+    .icon-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .icon {
+      width: 42px;
+      height: 42px;
+      flex: 0 0 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 13px;
+      font-size: 22px;
+      background: var(--primary-soft);
+    }
+
+    .goal .icon {
+      background: var(--accent-soft);
+    }
+
+    .file-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .file-item {
+      border: 1px solid var(--line);
+      border-radius: 15px;
+      padding: 13px 14px;
+      background: #fbfdff;
+    }
+
+    .file-name {
+      direction: ltr;
+      unicode-bidi: embed;
+      display: inline-block;
+      font-family: Consolas, "Courier New", monospace;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 4px;
+    }
+
+    .roadmap {
+      display: flex;
+      align-items: stretch;
+      gap: 10px;
+      margin-top: 18px;
+      flex-wrap: wrap;
+    }
+
+    .roadmap span {
+      flex: 1 1 180px;
+      text-align: center;
+      background: var(--primary-soft);
+      border: 1px solid #cbdff5;
+      border-radius: 14px;
+      padding: 10px;
+      font-weight: 700;
+    }
+
+    .steps-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 32px 2px 14px;
+    }
+
+    .steps-title h2 {
+      margin: 0;
+      font-size: 28px;
+    }
+
+    .steps-title .small {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .step {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 0;
+      overflow: hidden;
+      margin-bottom: 18px;
+      box-shadow: 0 8px 22px rgba(31, 56, 82, 0.06);
+      break-inside: avoid;
+    }
+
+    .step-head {
+      display: grid;
+      grid-template-columns: 70px 1fr;
+      align-items: stretch;
+      min-height: 88px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .step-number {
+      display: grid;
+      place-items: center;
+      background: linear-gradient(180deg, var(--primary), #0d47a1);
+      color: #fff;
+      font-size: 34px;
+      font-weight: 900;
+    }
+
+    .step-head-copy {
+      padding: 18px 22px 16px;
+      background: linear-gradient(90deg, #ffffff, #f8fbff);
+    }
+
+    .step-head h3 {
+      margin: 0 0 5px;
+      font-size: 23px;
+    }
+
+    .step-file {
+      direction: ltr;
+      unicode-bidi: embed;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-family: Consolas, "Courier New", monospace;
+      color: var(--primary);
+      background: var(--primary-soft);
+      border-radius: 10px;
+      padding: 4px 9px;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .step-body {
+      padding: 22px;
+    }
+
+    .step-body p:first-child {
+      margin-top: 0;
+    }
+
+    .code-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin: 15px 0 8px;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .code-label .action {
+      color: var(--accent);
+    }
+
+    .code-box {
+      direction: ltr;
+      text-align: left;
+      unicode-bidi: embed;
+      background: var(--code-bg);
+      color: var(--code-ink);
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid #27344a;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+      margin: 8px 0 16px;
+    }
+
+    .code-topbar {
+      height: 34px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 0 13px;
+      background: #0b1220;
+      border-bottom: 1px solid #27344a;
+    }
+
+    .dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #46556c;
+    }
+
+    pre {
+      margin: 0;
+      padding: 15px 17px;
+      overflow-x: auto;
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 15px;
+      line-height: 1.55;
+      tab-size: 4;
+      white-space: pre;
+    }
+
+    .changed-line {
+      display: block;
+      margin: 0 -17px;
+      padding: 0 14px 0 17px;
+      background: rgba(0, 168, 132, 0.18);
+      border-left: 4px solid #35d3ad;
+      color: #d9fff5;
+    }
+
+    .removed-line {
+      display: block;
+      margin: 0 -17px;
+      padding: 0 14px 0 17px;
+      background: rgba(214, 69, 69, 0.18);
+      border-left: 4px solid #ff7f7f;
+      color: #ffd6d6;
+    }
+
+    code.inline {
+      direction: ltr;
+      unicode-bidi: embed;
+      display: inline-block;
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 0.95em;
+      color: #0d47a1;
+      background: #edf4fc;
+      border-radius: 7px;
+      padding: 1px 6px;
+    }
+
+    .callout {
+      display: grid;
+      grid-template-columns: 42px 1fr;
+      gap: 12px;
+      border-radius: 16px;
+      padding: 15px 16px;
+      margin: 15px 0 0;
+      border: 1px solid;
+      break-inside: avoid;
+    }
+
+    .callout-icon {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 13px;
+      font-size: 22px;
+    }
+
+    .callout h4 {
+      margin: 0 0 4px;
+      font-size: 17px;
+    }
+
+    .callout p {
+      margin: 0;
+    }
+
+    .tip {
+      background: var(--warning-soft);
+      border-color: #f4d394;
+    }
+
+    .tip .callout-icon {
+      background: #ffe6ad;
+    }
+
+    .note {
+      background: var(--primary-soft);
+      border-color: #bdd6f1;
+    }
+
+    .note .callout-icon {
+      background: #d7e8fa;
+    }
+
+    .warning {
+      background: var(--danger-soft);
+      border-color: #f2bcbc;
+    }
+
+    .warning .callout-icon {
+      background: #ffd8d8;
+    }
+
+    .checklist {
+      display: grid;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .check {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      background: #f8fbfd;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px 13px;
+    }
+
+    .check-mark {
+      width: 24px;
+      height: 24px;
+      flex: 0 0 24px;
+      display: grid;
+      place-items: center;
+      border-radius: 7px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-weight: 900;
+    }
+
+    .command {
+      direction: ltr;
+      unicode-bidi: embed;
+      display: block;
+      margin-top: 6px;
+      padding: 8px 10px;
+      background: var(--code-bg);
+      color: #dff7ef;
+      border-radius: 9px;
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 14px;
+      overflow-wrap: anywhere;
+    }
+
+    .important {
+      border-top: 6px solid var(--danger);
+      margin-top: 22px;
+    }
+
+    .bonus {
+      margin-top: 22px;
+      background: linear-gradient(135deg, var(--bonus-soft), #ffffff);
+      border: 2px dashed #b59ce8;
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: 0 8px 22px rgba(73, 48, 120, 0.08);
+      break-inside: avoid;
+    }
+
+    .bonus .icon {
+      background: #e4d9ff;
+    }
+
+    .bonus h2 {
+      margin: 0 0 8px;
+      color: #56359f;
+    }
+
+    .bonus p {
+      margin-bottom: 0;
+    }
+
+    .footer {
+      text-align: center;
+      color: var(--muted);
+      padding: 24px 10px 10px;
+      font-size: 13px;
+    }
+
+    @media (max-width: 800px) {
+      .intro-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        padding: 28px 24px;
+      }
+
+      .step-head {
+        grid-template-columns: 56px 1fr;
+      }
+
+      .step-number {
+        font-size: 28px;
+      }
+
+      .step-head-copy {
+        padding: 15px 16px;
+      }
+
+      .step-body {
+        padding: 17px;
+      }
+
+      pre {
+        font-size: 13px;
+      }
+    }
+
+    @media print {
+      @page {
+        size: A4;
+        margin: 12mm;
+      }
+
+      body {
+        background: #fff;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .page {
+        width: 100%;
+        margin: 0;
+      }
+
+      .hero,
+      .panel,
+      .step,
+      .bonus {
+        box-shadow: none;
+      }
+
+      .hero {
+        border-radius: 18px;
+      }
+
+      .step,
+      .callout,
+      .bonus,
+      .panel {
+        break-inside: avoid;
+      }
+    }
+  
+
+    .icon-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .theme-icon-card {
+      background: #fbfdff;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 14px 12px;
+      text-align: center;
+      min-width: 0;
+    }
+
+    .theme-icon-preview {
+      width: 54px;
+      height: 54px;
+      margin: 0 auto 10px;
+      display: grid;
+      place-items: center;
+      border-radius: 15px;
+      background: linear-gradient(145deg, #e8f1fb, #ffffff);
+      border: 1px solid #cbdff5;
+      font-size: 28px;
+    }
+
+    .theme-icon-name {
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .theme-icon-code {
+      direction: ltr;
+      unicode-bidi: embed;
+      display: inline-block;
+      max-width: 100%;
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 12px;
+      color: var(--primary);
+      background: var(--primary-soft);
+      border-radius: 8px;
+      padding: 3px 6px;
+      overflow-wrap: anywhere;
+    }
+
+    .mapping-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      margin-top: 14px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+    }
+
+    .mapping-table th,
+    .mapping-table td {
+      padding: 11px 12px;
+      border-bottom: 1px solid var(--line);
+      text-align: right;
+      vertical-align: middle;
+    }
+
+    .mapping-table th {
+      background: var(--primary-soft);
+      color: #0d47a1;
+      font-weight: 800;
+    }
+
+    .mapping-table tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .mapping-table code {
+      direction: ltr;
+      unicode-bidi: embed;
+      display: inline-block;
+      font-family: Consolas, "Courier New", monospace;
+      color: #0d47a1;
+      background: #edf4fc;
+      border-radius: 7px;
+      padding: 2px 6px;
+    }
+
+    .before-after {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .mini-label {
+      font-weight: 800;
+      margin-bottom: 7px;
+      color: var(--muted);
+    }
+
+    @media (max-width: 900px) {
+      .icon-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 700px) {
+      .before-after {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media print {
+      .icon-grid {
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+      }
+    }
+</style>
+</head>
+<body>
+  <main class="page">
+    <header class="hero">
+      <div class="eyebrow">🎨 תרגיל סדנה - ערכות נושא ואייקונים</div>
+      <h1>החלפת אייקון לערכת נושא קיימת</h1>
+      <p>
+        נבחר ערכת נושא אחת ונחליף את האייקון שלה באייקון שכבר קיים בפרויקט.
+        לא משנים את צבעי הערכה או את השם שלה - רק את האייקון שמופיע במסך HOME.
+      </p>
+      <div class="hero-tags">
+        <span class="hero-tag">2 שלבים</span>
+        <span class="hero-tag">קובץ אחד</span>
+        <span class="hero-tag">10 אייקונים לבחירה</span>
+        <span class="hero-tag">ללא שינוי בחומרה</span>
+      </div>
+    </header>
+
+    <section class="section intro-grid">
+      <article class="panel goal">
+        <div class="icon-title">
+          <div class="icon">🎯</div>
+          <div><h2>המטרה</h2></div>
+        </div>
+        <p>
+          לג'וקבוקס יש 10 ערכות נושא. כל ערכה מציגה אייקון קטן בגודל
+          <code class="inline">16x16</code> פיקסלים בשוליים של מסך HOME.
+          בתרגיל נחליף לערכה אחת את האייקון שלה באייקון של ערכה אחרת.
+        </p>
+        <div class="roadmap">
+          <span>1. בחירת שורה ואייקון</span>
+          <span>2. קומפילציה והעלאה</span>
+        </div>
+      </article>
+
+      <article class="panel files">
+        <div class="icon-title">
+          <div class="icon">📁</div>
+          <div><h2>איפה משנים?</h2></div>
+        </div>
+        <div class="file-list">
+          <div class="file-item">
+            <div class="file-name">src/JukeboxUI.cpp</div>
+            <div>הקובץ היחיד שבו צריך לבצע שינוי.</div>
+          </div>
+          <div class="file-item">
+            <div class="file-name">drawThemeDecorations()</div>
+            <div>הפונקציה שמחליטה איזה אייקון יקבל כל Theme.</div>
+          </div>
+          <div class="file-item">
+            <div class="file-name">switch (themeManager.current())</div>
+            <div>טבלת ההתאמה בין ערכת הנושא לבין האייקון שלה.</div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="panel section">
+      <div class="icon-title">
+        <div class="icon">🔗</div>
+        <div><h2>טבלת ההתאמה הקיימת</h2></div>
+      </div>
+      <p>
+        כל שורת <code class="inline">case</code> מחברת ערכת נושא לאייקון.
+        אין צורך ליצור אייקון חדש - מספיק להחליף את השם שמופיע אחרי סימן השוויון.
+      </p>
+
+      <div class="code-label">
+        <span>הקוד הקיים בקובץ</span>
+        <span>בערך בשורות 1009-1022</span>
+      </div>
+      <div class="code-box">
+        <div class="code-topbar"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+        <pre>const uint8_t* icon = nullptr;
+switch (themeManager.current())
+{
+    case THEME_PINEAPPLE: icon = iconPineapple; break;
+    case THEME_RETRO_ARCADE: icon = iconStar; break;
+    case THEME_ROBOT: icon = iconRobot; break;
+    case THEME_SPACESHIP: icon = iconSpaceship; break;
+    case THEME_PIRATE: icon = iconSkull; break;
+    case THEME_VINTAGE_RADIO: icon = iconSpeaker; break;
+    case THEME_CASSETTE: icon = iconCassette; break;
+    case THEME_FOREST: icon = iconTree; break;
+    case THEME_STEAMPUNK: icon = iconGear; break;
+    case THEME_MONSTER: icon = iconMonster; break;
+    default: break;  // Classic, Custom: no icon
+}</pre>
+      </div>
+
+      <div class="callout note">
+        <div class="callout-icon">🧩</div>
+        <div>
+          <h4>איך קוראים את השורה?</h4>
+          <p>
+            לדוגמה, השורה של Pineapple אומרת: כאשר ערכת הנושא הנוכחית היא
+            <code class="inline">THEME_PINEAPPLE</code>, השתמשו באייקון
+            <code class="inline">iconPineapple</code>.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel section">
+      <div class="icon-title">
+        <div class="icon">🖼️</div>
+        <div><h2>האייקונים שכבר קיימים בפרויקט</h2></div>
+      </div>
+      <p>אפשר לבחור כל אחד מעשרת האייקונים ולהצמיד אותו לכל ערכת נושא.</p>
+      <div class="icon-grid">
+        <div class="theme-icon-card"><div class="theme-icon-preview">🍍</div><div class="theme-icon-name">אננס</div><div class="theme-icon-code">iconPineapple</div></div>
+        <div class="theme-icon-card"><div class="theme-icon-preview">⭐</div><div class="theme-icon-name">כוכב</div><div class="theme-icon-code">iconStar</div></div>
+        <div class="theme-icon-card"><div class="theme-icon-preview">🤖</div><div class="theme-icon-name">רובוט</div><div class="theme-icon-code">iconRobot</div></div>
+        <div class="theme-icon-card"><div class="theme-icon-preview">🚀</div><div class="theme-icon-name">חללית</div><div class="theme-icon-code">iconSpaceship</div></div>
+        <div class="theme-icon-card"><div class="theme-icon-preview">☠️</div><div class="theme-icon-name">גולגולת</div><div class="theme-icon-code">iconSkull</div></div>
+        <div class="theme-icon-card"><div class="theme-icon-preview">🔊</div><div class="theme-icon-name">רמקול</div><div class="theme-icon-code">iconSpeaker</div></div>
+        <div class="theme-icon-card"><div class="theme-icon-preview">📼</div><div class="theme-icon-name">קלטת</div><div class="theme-icon-code">iconCassette</div></div>
+        <div class="theme-icon-card"><div class="theme-icon-preview">🌲</div><div class="theme-icon-name">עץ</div><div class="theme-icon-code">iconTree</div></div>
+        <div class="theme-icon-card"><div class="theme-icon-preview">⚙️</div><div class="theme-icon-name">גלגל שיניים</div><div class="theme-icon-code">iconGear</div></div>
+        <div class="theme-icon-card"><div class="theme-icon-preview">👾</div><div class="theme-icon-name">מפלצת</div><div class="theme-icon-code">iconMonster</div></div>
+      </div>
+
+      <div class="callout tip">
+        <div class="callout-icon">💡</div>
+        <div>
+          <h4>שימו לב</h4>
+          <p>
+            האימוג'ים בכרטיסים הם המחשה בלבד. במסך הג'וקבוקס יוצג אייקון הפיקסלים
+            האמיתי בגודל 16x16 שמוגדר בקוד.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <div class="steps-title">
+      <h2>שלבי העבודה</h2>
+      <div class="small">שנו רק את שם האייקון שאחרי סימן השוויון</div>
+    </div>
+
+    <section class="step">
+      <div class="step-head">
+        <div class="step-number">1</div>
+        <div class="step-head-copy">
+          <h3>בחרו ערכת נושא ואייקון חדש</h3>
+          <div class="step-file">src/JukeboxUI.cpp</div>
+        </div>
+      </div>
+      <div class="step-body">
+        <p>
+          מצאו את בלוק ה-<code class="inline">switch</code> ובחרו שורה אחת לשינוי.
+          בדוגמה הזו נחליף את האייקון של Pineapple מאננס לגולגולת.
+        </p>
+
+        <div class="before-after">
+          <div>
+            <div class="mini-label">לפני</div>
+            <div class="code-box">
+              <div class="code-topbar"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+              <pre><span class="removed-line">case THEME_PINEAPPLE: icon = iconPineapple; break;</span></pre>
+            </div>
+          </div>
+          <div>
+            <div class="mini-label">אחרי</div>
+            <div class="code-box">
+              <div class="code-topbar"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+              <pre><span class="changed-line">case THEME_PINEAPPLE: icon = iconSkull; break;</span></pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout warning">
+          <div class="callout-icon">⚠️</div>
+          <div>
+            <h4>מה בדיוק משנים?</h4>
+            <p>
+              משנים רק את החלק שמופיע אחרי <code class="inline">icon =</code>.
+              אל תשנו את <code class="inline">case THEME_PINEAPPLE</code>, את המילה
+              <code class="inline">break</code> או את הנקודה-פסיק בסוף.
+            </p>
+          </div>
+        </div>
+
+        <div class="callout note">
+          <div class="callout-icon">🎲</div>
+          <div>
+            <h4>אפשר לבחור כל צירוף</h4>
+            <p>
+              כל ערכת נושא יכולה לקבל כל אחד מעשרת האייקונים, גם כאשר האייקון שייך
+              במקור לערכה אחרת.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="step">
+      <div class="step-head">
+        <div class="step-number">2</div>
+        <div class="step-head-copy">
+          <h3>קומפילציה, העלאה ובדיקה</h3>
+          <div class="step-file">PlatformIO / ESP32-S3</div>
+        </div>
+      </div>
+      <div class="step-body">
+        <div class="checklist">
+          <div class="check">
+            <div class="check-mark">✓</div>
+            <div>שמרו את הקובץ <code class="inline">src/JukeboxUI.cpp</code>.</div>
+          </div>
+          <div class="check">
+            <div class="check-mark">✓</div>
+            <div>
+              הריצו קומפילציה ובדקו שאין שגיאות:
+              <span class="command">pio run -e esp32s3</span>
+            </div>
+          </div>
+          <div class="check">
+            <div class="check-mark">✓</div>
+            <div>
+              אם הכול תקין, העלו את הקוד לבקר:
+              <span class="command">pio run -e esp32s3 -t upload</span>
+            </div>
+          </div>
+          <div class="check">
+            <div class="check-mark">✓</div>
+            <div>
+              במסך HOME פתחו <strong>SETTINGS ← THEME</strong>, בחרו את הערכה ששיניתם
+              ובדקו שהאייקון החדש מופיע בשוליים השמאליים והימניים של המסך.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel important">
+      <div class="icon-title">
+        <div class="icon" style="background:#ffd8d8;">📌</div>
+        <div><h2>מה לא משתנה בתרגיל?</h2></div>
+      </div>
+      <p>
+        צבעי ערכת הנושא, השם שלה ושאר ההתנהגות נשארים כפי שהיו. השינוי משפיע רק
+        על ציור האייקון הקטן שמופיע בעיצוב מסך HOME.
+      </p>
+      <p>
+        בערכות Classic ו-Custom לא מופיע אייקון, מפני שהן מגיעות אל שורת
+        <code class="inline">default</code> שבה הערך נשאר <code class="inline">nullptr</code>.
+      </p>
+    </section>
+
+    <section class="bonus">
+      <div class="icon-title">
+        <div class="icon">🚀</div>
+        <div><h2>אתגר בונוס - לא חובה</h2></div>
+      </div>
+      <p><strong>החלפה כפולה:</strong> תנו ל-Robot את האייקון של Monster ול-Monster את האייקון של Robot.</p>
+      <p>
+        <strong>אתגר מתקדם:</strong> נסו לצייר אייקון חדש משלכם. כל אייקון הוא רשת
+        של 16x16 פיקסלים, שבה כל פיקסל דלוק או כבוי. הנתונים נארזים כזוג בייטים
+        לכל שורה, ובסך הכול 32 בייטים לאייקון.
+      </p>
+      <div class="callout tip">
+        <div class="callout-icon">🧠</div>
+        <div>
+          <h4>רמז למתקדמים</h4>
+          <p>
+            יצירת אייקון חדש דורשת עבודה עם מספרים בינאריים והקסדצימליים. כדאי
+            לבצע את החלק הזה יחד עם המדריך או המדריכה.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      מדריך עבודה לסדנת ג'וקבוקס - ניתן לפתוח בדפדפן, להקרין או להדפיס
+    </footer>
+  </main>
+</body>
+</html>

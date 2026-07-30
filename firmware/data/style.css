@@ -1,0 +1,346 @@
+/* ── Reset & Variables ───────────────────────────────────── */
+:root {
+  --bg:          #0d0d1a;
+  --card:        #14142a;
+  --card-border: #252550;
+  --accent:      #e94560;
+  --accent2:     #f5c518;
+  --blue:        #4cc9f0;
+  --text:        #eaeaea;
+  --text-dim:    #9090b0;
+  --success:     #4ade80;
+  --error:       #f87171;
+  --radius:      14px;
+  --shadow:      0 4px 24px rgba(0,0,0,.55);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  direction: rtl;
+  min-height: 100vh;
+  padding-bottom: 2rem;
+}
+
+/* ── App wrapper ─────────────────────────────────────────── */
+.app {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 0 .75rem;
+}
+
+/* ── Header ──────────────────────────────────────────────── */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem .25rem .75rem;
+}
+
+.header-title {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--accent2);
+  display: flex;
+  align-items: center;
+  gap: .45rem;
+}
+.header-icon { font-size: 1.5rem; }
+
+/* ── Status chip ─────────────────────────────────────────── */
+.chip {
+  font-size: .72rem;
+  font-weight: 600;
+  padding: .28rem .72rem;
+  border-radius: 50px;
+  letter-spacing: .03em;
+}
+.chip-online  { background: #14532d; color: var(--success); }
+.chip-offline { background: #450a0a; color: var(--error);   }
+
+/* ── Cards ───────────────────────────────────────────────── */
+.card {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  padding: 1.1rem 1rem;
+  margin-bottom: 1rem;
+  box-shadow: var(--shadow);
+}
+.card-sm { padding: .85rem .9rem; }
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: .65rem;
+}
+
+.card-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--accent2);
+  margin-bottom: .65rem;
+}
+.card-header .card-title { margin-bottom: 0; }
+
+/* ── Now Playing card ────────────────────────────────────── */
+.card-player {
+  text-align: center;
+  background: linear-gradient(145deg, #1a1a38, #14142a);
+}
+
+.now-playing-label {
+  font-size: .72rem;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  color: var(--text-dim);
+  margin-bottom: .5rem;
+}
+
+.current-song-name {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--accent2);
+  min-height: 1.8rem;
+  margin-bottom: .3rem;
+  word-break: break-word;
+}
+
+.play-status-text {
+  font-size: .8rem;
+  color: var(--text-dim);
+  margin-bottom: 1.2rem;
+}
+
+/* ── Player controls ─────────────────────────────────────── */
+.controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: .7rem;
+  margin-bottom: 1.3rem;
+}
+
+.btn {
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  transition: transform .1s, opacity .15s;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn:active { transform: scale(.92); opacity: .8; }
+
+.btn-ctrl {
+  background: #252548;
+  color: var(--text);
+  font-size: 1.35rem;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-play {
+  background: var(--accent);
+  color: #fff;
+  font-size: 1.6rem;
+  width: 3.8rem;
+  height: 3.8rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 18px rgba(233,69,96,.45);
+}
+.btn-play.playing {
+  background: #f59e0b;
+  box-shadow: 0 0 18px rgba(245,158,11,.45);
+}
+
+/* ── Volume ──────────────────────────────────────────────── */
+.volume-row {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+}
+.vol-icon { font-size: 1.1rem; }
+.slider {
+  flex: 1;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 5px;
+  border-radius: 3px;
+  background: #303060;
+  outline: none;
+}
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  background: var(--accent2);
+  cursor: pointer;
+  box-shadow: 0 0 6px rgba(245,197,24,.5);
+}
+.vol-number {
+  font-size: .85rem;
+  color: var(--accent2);
+  min-width: 1.6rem;
+  text-align: center;
+}
+
+/* ── Song list ───────────────────────────────────────────── */
+.song-list { display: flex; flex-direction: column; gap: .35rem; }
+
+.song-item {
+  display: flex;
+  align-items: center;
+  gap: .65rem;
+  padding: .6rem .7rem;
+  border-radius: 9px;
+  background: #1e1e3e;
+  cursor: pointer;
+  transition: background .15s;
+  border: 1px solid transparent;
+}
+.song-item:hover  { background: #26264e; }
+.song-item.active {
+  background: #1e1235;
+  border-color: var(--accent);
+}
+
+.song-num {
+  font-size: .75rem;
+  color: var(--text-dim);
+  min-width: 1.4rem;
+  text-align: center;
+}
+.song-info   { flex: 1; overflow: hidden; }
+.song-name   { font-size: .92rem; font-weight: 500; display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.song-size   { font-size: .72rem; color: var(--text-dim); }
+.song-play   { font-size: .9rem; color: var(--text-dim); opacity: .6; }
+.song-item.active .song-play { color: var(--accent); opacity: 1; }
+
+/* ── Badge / hint ────────────────────────────────────────── */
+.badge {
+  display: inline-block;
+  background: #252548;
+  color: var(--text-dim);
+  font-size: .73rem;
+  padding: .2rem .6rem;
+  border-radius: 20px;
+  margin-bottom: .6rem;
+}
+.hint {
+  color: var(--text-dim);
+  font-size: .85rem;
+  margin-bottom: .5rem;
+}
+
+/* ── Upload zone ─────────────────────────────────────────── */
+.upload-zone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  border: 2px dashed var(--card-border);
+  border-radius: 10px;
+  padding: 1.4rem;
+  cursor: pointer;
+  transition: border-color .2s, background .2s;
+  margin: .6rem 0;
+  color: var(--text-dim);
+  font-size: .9rem;
+}
+.upload-zone:hover  { border-color: var(--blue); background: #0d1020; }
+.upload-zone.active { border-color: var(--success); }
+.upload-icon { font-size: 1.8rem; }
+
+/* ── Progress bar ────────────────────────────────────────── */
+.progress-bar-bg {
+  height: 8px;
+  background: #252548;
+  border-radius: 4px;
+  overflow: hidden;
+  margin: .5rem 0 .2rem;
+}
+.progress-bar-fill {
+  height: 100%;
+  width: 0;
+  background: linear-gradient(90deg, var(--blue), var(--accent2));
+  border-radius: 4px;
+  transition: width .3s ease;
+}
+.progress-label {
+  font-size: .78rem;
+  color: var(--text-dim);
+  text-align: center;
+}
+.upload-status { font-size: .85rem; margin-top: .4rem; min-height: 1.2rem; }
+
+/* ── Playlist list ───────────────────────────────────────── */
+.playlist-list { display: flex; flex-direction: column; gap: .35rem; }
+.playlist-item {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  padding: .55rem .7rem;
+  background: #1e1e3e;
+  border-radius: 9px;
+  cursor: pointer;
+}
+.playlist-item:hover { background: #26264e; }
+.playlist-name { flex: 1; font-size: .9rem; }
+.playlist-count { font-size: .75rem; color: var(--text-dim); }
+
+/* ── Status grid ─────────────────────────────────────────── */
+.status-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .5rem;
+}
+.status-cell {
+  background: #1a1a30;
+  border-radius: 8px;
+  padding: .5rem .7rem;
+}
+.status-label { font-size: .7rem; color: var(--text-dim); display: block; margin-bottom: .15rem; }
+.status-val   { font-size: .9rem; font-weight: 600; }
+
+/* ── Logs ────────────────────────────────────────────────── */
+.logs {
+  max-height: 160px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: .2rem;
+  font-size: .78rem;
+  font-family: monospace;
+  color: var(--text-dim);
+}
+.log-line { padding: .15rem 0; border-bottom: 1px solid #1a1a30; }
+
+/* ── Buttons (small / secondary) ────────────────────────── */
+.btn-sm {
+  background: #252548;
+  color: var(--text-dim);
+  font-size: .78rem;
+  padding: .3rem .7rem;
+  border-radius: 6px;
+  border: 1px solid var(--card-border);
+}
+.btn-sm:hover { background: #303060; color: var(--text); }
+
+/* ── Color helpers ───────────────────────────────────────── */
+.txt-success { color: var(--success); }
+.txt-error   { color: var(--error);   }
+.txt-warn    { color: var(--accent2); }

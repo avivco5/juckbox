@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>תרגיל סדנה - הפיכת NEXT לשיר קודם</title>
+  <style>
+    :root {
+      --bg: #f4f7fb;
+      --paper: #ffffff;
+      --ink: #183047;
+      --muted: #5f7387;
+      --primary: #1565c0;
+      --primary-soft: #e8f1fb;
+      --accent: #00a884;
+      --accent-soft: #e5f8f3;
+      --warning: #f39c12;
+      --warning-soft: #fff5df;
+      --danger: #d64545;
+      --danger-soft: #fff0f0;
+      --bonus: #7b52c7;
+      --bonus-soft: #f1ebff;
+      --code-bg: #111827;
+      --code-ink: #e5edf7;
+      --line: #dbe5ef;
+      --shadow: 0 14px 36px rgba(31, 56, 82, 0.10);
+      --radius: 22px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at top right, rgba(21, 101, 192, 0.10), transparent 28%),
+        radial-gradient(circle at bottom left, rgba(0, 168, 132, 0.10), transparent 24%),
+        var(--bg);
+      color: var(--ink);
+      font-family: Arial, "Noto Sans Hebrew", sans-serif;
+      line-height: 1.65;
+    }
+
+    .page {
+      width: min(1120px, calc(100% - 28px));
+      margin: 28px auto 48px;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(135deg, #0d47a1, #1976d2 60%, #00a884);
+      color: #fff;
+      border-radius: 28px;
+      padding: 38px 38px 34px;
+      box-shadow: var(--shadow);
+    }
+
+    .hero::before,
+    .hero::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.10);
+    }
+
+    .hero::before {
+      width: 190px;
+      height: 190px;
+      left: -56px;
+      top: -74px;
+    }
+
+    .hero::after {
+      width: 120px;
+      height: 120px;
+      right: 56px;
+      bottom: -56px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.16);
+      border: 1px solid rgba(255,255,255,0.24);
+      border-radius: 999px;
+      padding: 7px 13px;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(30px, 5vw, 54px);
+      line-height: 1.15;
+      letter-spacing: -0.6px;
+    }
+
+    .hero p {
+      margin: 0;
+      max-width: 820px;
+      font-size: 18px;
+      color: rgba(255,255,255,0.92);
+    }
+
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    .hero-tag {
+      background: rgba(255,255,255,0.13);
+      border: 1px solid rgba(255,255,255,0.22);
+      border-radius: 14px;
+      padding: 8px 12px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .section {
+      margin-top: 24px;
+    }
+
+    .intro-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 18px;
+    }
+
+    .panel {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: 0 8px 22px rgba(31, 56, 82, 0.06);
+    }
+
+    .panel h2,
+    .panel h3 {
+      margin-top: 0;
+      line-height: 1.25;
+    }
+
+    .goal {
+      border-top: 6px solid var(--accent);
+    }
+
+    .files {
+      border-top: 6px solid var(--primary);
+    }
+
+    .icon-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .icon {
+      width: 42px;
+      height: 42px;
+      flex: 0 0 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 13px;
+      font-size: 22px;
+      background: var(--primary-soft);
+    }
+
+    .goal .icon {
+      background: var(--accent-soft);
+    }
+
+    .file-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .file-item {
+      border: 1px solid var(--line);
+      border-radius: 15px;
+      padding: 13px 14px;
+      background: #fbfdff;
+    }
+
+    .file-name {
+      direction: ltr;
+      unicode-bidi: embed;
+      display: inline-block;
+      font-family: Consolas, "Courier New", monospace;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 4px;
+    }
+
+    .roadmap {
+      display: flex;
+      align-items: stretch;
+      gap: 10px;
+      margin-top: 18px;
+      flex-wrap: wrap;
+    }
+
+    .roadmap span {
+      flex: 1 1 180px;
+      text-align: center;
+      background: var(--primary-soft);
+      border: 1px solid #cbdff5;
+      border-radius: 14px;
+      padding: 10px;
+      font-weight: 700;
+    }
+
+    .steps-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 32px 2px 14px;
+    }
+
+    .steps-title h2 {
+      margin: 0;
+      font-size: 28px;
+    }
+
+    .steps-title .small {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .step {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 0;
+      overflow: hidden;
+      margin-bottom: 18px;
+      box-shadow: 0 8px 22px rgba(31, 56, 82, 0.06);
+      break-inside: avoid;
+    }
+
+    .step-head {
+      display: grid;
+      grid-template-columns: 70px 1fr;
+      align-items: stretch;
+      min-height: 88px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .step-number {
+      display: grid;
+      place-items: center;
+      background: linear-gradient(180deg, var(--primary), #0d47a1);
+      color: #fff;
+      font-size: 34px;
+      font-weight: 900;
+    }
+
+    .step-head-copy {
+      padding: 18px 22px 16px;
+      background: linear-gradient(90deg, #ffffff, #f8fbff);
+    }
+
+    .step-head h3 {
+      margin: 0 0 5px;
+      font-size: 23px;
+    }
+
+    .step-file {
+      direction: ltr;
+      unicode-bidi: embed;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-family: Consolas, "Courier New", monospace;
+      color: var(--primary);
+      background: var(--primary-soft);
+      border-radius: 10px;
+      padding: 4px 9px;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .step-body {
+      padding: 22px;
+    }
+
+    .step-body p:first-child {
+      margin-top: 0;
+    }
+
+    .code-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin: 15px 0 8px;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .code-label .action {
+      color: var(--accent);
+    }
+
+    .code-box {
+      direction: ltr;
+      text-align: left;
+      unicode-bidi: embed;
+      background: var(--code-bg);
+      color: var(--code-ink);
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid #27344a;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+      margin: 8px 0 16px;
+    }
+
+    .code-topbar {
+      height: 34px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 0 13px;
+      background: #0b1220;
+      border-bottom: 1px solid #27344a;
+    }
+
+    .dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #46556c;
+    }
+
+    pre {
+      margin: 0;
+      padding: 15px 17px;
+      overflow-x: auto;
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 15px;
+      line-height: 1.55;
+      tab-size: 4;
+      white-space: pre;
+    }
+
+    .changed-line {
+      display: block;
+      margin: 0 -17px;
+      padding: 0 14px 0 17px;
+      background: rgba(0, 168, 132, 0.18);
+      border-left: 4px solid #35d3ad;
+      color: #d9fff5;
+    }
+
+    .removed-line {
+      display: block;
+      margin: 0 -17px;
+      padding: 0 14px 0 17px;
+      background: rgba(214, 69, 69, 0.18);
+      border-left: 4px solid #ff7f7f;
+      color: #ffd6d6;
+    }
+
+    code.inline {
+      direction: ltr;
+      unicode-bidi: embed;
+      display: inline-block;
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 0.95em;
+      color: #0d47a1;
+      background: #edf4fc;
+      border-radius: 7px;
+      padding: 1px 6px;
+    }
+
+    .callout {
+      display: grid;
+      grid-template-columns: 42px 1fr;
+      gap: 12px;
+      border-radius: 16px;
+      padding: 15px 16px;
+      margin: 15px 0 0;
+      border: 1px solid;
+      break-inside: avoid;
+    }
+
+    .callout-icon {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 13px;
+      font-size: 22px;
+    }
+
+    .callout h4 {
+      margin: 0 0 4px;
+      font-size: 17px;
+    }
+
+    .callout p {
+      margin: 0;
+    }
+
+    .tip {
+      background: var(--warning-soft);
+      border-color: #f4d394;
+    }
+
+    .tip .callout-icon {
+      background: #ffe6ad;
+    }
+
+    .note {
+      background: var(--primary-soft);
+      border-color: #bdd6f1;
+    }
+
+    .note .callout-icon {
+      background: #d7e8fa;
+    }
+
+    .warning {
+      background: var(--danger-soft);
+      border-color: #f2bcbc;
+    }
+
+    .warning .callout-icon {
+      background: #ffd8d8;
+    }
+
+    .checklist {
+      display: grid;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .check {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      background: #f8fbfd;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px 13px;
+    }
+
+    .check-mark {
+      width: 24px;
+      height: 24px;
+      flex: 0 0 24px;
+      display: grid;
+      place-items: center;
+      border-radius: 7px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-weight: 900;
+    }
+
+    .command {
+      direction: ltr;
+      unicode-bidi: embed;
+      display: block;
+      margin-top: 6px;
+      padding: 8px 10px;
+      background: var(--code-bg);
+      color: #dff7ef;
+      border-radius: 9px;
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 14px;
+      overflow-wrap: anywhere;
+    }
+
+    .important {
+      border-top: 6px solid var(--danger);
+      margin-top: 22px;
+    }
+
+    .bonus {
+      margin-top: 22px;
+      background: linear-gradient(135deg, var(--bonus-soft), #ffffff);
+      border: 2px dashed #b59ce8;
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: 0 8px 22px rgba(73, 48, 120, 0.08);
+      break-inside: avoid;
+    }
+
+    .bonus .icon {
+      background: #e4d9ff;
+    }
+
+    .bonus h2 {
+      margin: 0 0 8px;
+      color: #56359f;
+    }
+
+    .bonus p {
+      margin-bottom: 0;
+    }
+
+    .footer {
+      text-align: center;
+      color: var(--muted);
+      padding: 24px 10px 10px;
+      font-size: 13px;
+    }
+
+    @media (max-width: 800px) {
+      .intro-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        padding: 28px 24px;
+      }
+
+      .step-head {
+        grid-template-columns: 56px 1fr;
+      }
+
+      .step-number {
+        font-size: 28px;
+      }
+
+      .step-head-copy {
+        padding: 15px 16px;
+      }
+
+      .step-body {
+        padding: 17px;
+      }
+
+      pre {
+        font-size: 13px;
+      }
+    }
+
+    @media print {
+      @page {
+        size: A4;
+        margin: 12mm;
+      }
+
+      body {
+        background: #fff;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .page {
+        width: 100%;
+        margin: 0;
+      }
+
+      .hero,
+      .panel,
+      .step,
+      .bonus {
+        box-shadow: none;
+      }
+
+      .hero {
+        border-radius: 18px;
+      }
+
+      .step,
+      .callout,
+      .bonus,
+      .panel {
+        break-inside: avoid;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="hero">
+      <div class="eyebrow">🎵 תרגיל סדנה - C++ ו-ESP32</div>
+      <h1>הפיכת כפתור NEXT לכפתור "שיר קודם"</h1>
+      <p>
+        נשנה את ההתנהגות של הכפתור הפיזי המחובר ל-GPIO45 כך שיעביר לשיר הקודם ברשימה.
+        לא נוגעים בחיווט או בחומרה - רק בקוד.
+      </p>
+      <div class="hero-tags">
+        <span class="hero-tag">4 שלבים</span>
+        <span class="hero-tag">3 קבצים</span>
+        <span class="hero-tag">ללא שינוי בחומרה</span>
+        <span class="hero-tag">מתאים לעבודה מודרכת</span>
+      </div>
+    </header>
+
+    <section class="section intro-grid">
+      <article class="panel goal">
+        <div class="icon-title">
+          <div class="icon">🎯</div>
+          <div>
+            <h2>המטרה</h2>
+          </div>
+        </div>
+        <p>
+          כרגע, לחיצה על הכפתור הפיזי המחובר ל-<code class="inline">GPIO45</code>
+          המסומן NEXT מעבירה לשיר הבא ברשימה. במשימה הזו נשנה את ההתנהגות כך שאותו
+          כפתור פיזי יעביר לשיר הקודם במקום.
+        </p>
+        <div class="roadmap">
+          <span>1. הצהרה</span>
+          <span>2. מימוש</span>
+          <span>3. קריאה לפונקציה</span>
+          <span>4. בדיקה</span>
+        </div>
+      </article>
+
+      <article class="panel files">
+        <div class="icon-title">
+          <div class="icon">📁</div>
+          <div>
+            <h2>איפה ההתנהגות מוגדרת?</h2>
+          </div>
+        </div>
+        <div class="file-list">
+          <div class="file-item">
+            <div class="file-name">src/main.cpp</div>
+            <div>בודק אם הכפתור נלחץ וקורא לפונקציה המתאימה.</div>
+          </div>
+          <div class="file-item">
+            <div class="file-name">src/JukeboxUI.h</div>
+            <div>מכיל את ההצהרות על הפונקציות הקיימות במחלקה.</div>
+          </div>
+          <div class="file-item">
+            <div class="file-name">src/JukeboxUI.cpp</div>
+            <div>מכיל את המימוש בפועל של הפונקציות.</div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <div class="steps-title">
+      <h2>שלבי העבודה</h2>
+      <div class="small">עבדו לפי הסדר ושמרו כל קובץ לאחר השינוי</div>
+    </div>
+
+    <section class="step">
+      <div class="step-head">
+        <div class="step-number">1</div>
+        <div class="step-head-copy">
+          <h3>הוספת הצהרה</h3>
+          <div class="step-file">src/JukeboxUI.h</div>
+        </div>
+      </div>
+      <div class="step-body">
+        <p>
+          פתחו את <code class="inline">src/JukeboxUI.h</code>. מצאו את השורה
+          בערך בשורה 15:
+        </p>
+
+        <div class="code-label">
+          <span>מה מחפשים?</span>
+          <span>קוד קיים</span>
+        </div>
+        <div class="code-box">
+          <div class="code-topbar"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+          <pre>void nextSong();</pre>
+        </div>
+
+        <p>הוסיפו מיד אחריה שורה חדשה, כך שיהיה:</p>
+
+        <div class="code-label">
+          <span>מה כותבים?</span>
+          <span class="action">השורה הירוקה היא השורה החדשה</span>
+        </div>
+        <div class="code-box">
+          <div class="code-topbar"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+          <pre>void nextSong();
+<span class="changed-line">void previousSong();</span></pre>
+        </div>
+
+        <div class="callout note">
+          <div class="callout-icon">🧩</div>
+          <div>
+            <h4>מה עשינו?</h4>
+            <p>
+              הודענו למחלקה <code class="inline">JukeboxUI</code> שקיימת פונקציה חדשה בשם
+              <code class="inline">previousSong()</code>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="step">
+      <div class="step-head">
+        <div class="step-number">2</div>
+        <div class="step-head-copy">
+          <h3>הוספת המימוש</h3>
+          <div class="step-file">src/JukeboxUI.cpp</div>
+        </div>
+      </div>
+      <div class="step-body">
+        <p>
+          פתחו את <code class="inline">src/JukeboxUI.cpp</code>. מצאו את הפונקציה
+          בערך בשורה 507:
+        </p>
+
+        <div class="code-label">
+          <span>הפונקציה הקיימת</span>
+          <span>מעבירה לשיר הבא</span>
+        </div>
+        <div class="code-box">
+          <div class="code-topbar"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+          <pre>void JukeboxUI::nextSong()
+{
+    if (songCount() &gt; 0)
+    {
+        const int current = max(0, _songIndex);
+        selectSong((current + 1) % songCount());
+    }
+}</pre>
+        </div>
+
+        <p>
+          מיד אחריה הוסיפו פונקציה חדשה, דומה כמעט לגמרי. במקום
+          <code class="inline">+ 1</code> נשתמש ב-
+          <code class="inline">+ songCount() - 1</code>.
+        </p>
+
+        <div class="code-label">
+          <span>הפונקציה החדשה</span>
+          <span class="action">השורה הירוקה מבצעת מעבר אחורה</span>
+        </div>
+        <div class="code-box">
+          <div class="code-topbar"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+          <pre>void JukeboxUI::previousSong()
+{
+    if (songCount() &gt; 0)
+    {
+        const int current = max(0, _songIndex);
+<span class="changed-line">        selectSong((current + songCount() - 1) % songCount());</span>
+    }
+}</pre>
+        </div>
+
+        <div class="callout tip">
+          <div class="callout-icon">💡</div>
+          <div>
+            <h4>למה לא להשתמש פשוט ב-1-?</h4>
+            <p>
+              ב-C++ אופרטור ה-<code class="inline">%</code> לא מתנהג יפה עם מספרים שליליים.
+              הביטוי <code class="inline">(current - 1) % songCount()</code> יכול להיות שלילי
+              כאשר <code class="inline">current == 0</code>. החישוב
+              <code class="inline">current + songCount() - 1</code> שומר על תוצאה חיובית
+              ומאפשר "גלגול" מהשיר הראשון לשיר האחרון.
+            </p>
+          </div>
+        </div>
+
+        <div class="callout note">
+          <div class="callout-icon">🔎</div>
+          <div>
+            <h4>בדיקה נוספת</h4>
+            <p>
+              אותו חישוב כבר קיים בפונקציה <code class="inline">handleTouch()</code>,
+              בטיפול בכפתור <code class="inline">&lt;&lt;</code> במסך HOME. אפשר לחפש אותו
+              ולוודא שהקוד שלכם דומה.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="step">
+      <div class="step-head">
+        <div class="step-number">3</div>
+        <div class="step-head-copy">
+          <h3>שינוי הקריאה לפונקציה החדשה</h3>
+          <div class="step-file">src/main.cpp</div>
+        </div>
+      </div>
+      <div class="step-body">
+        <p>
+          פתחו את <code class="inline">src/main.cpp</code>. מצאו את הבלוק שמטפל בלחיצה
+          על כפתור NEXT, בערך בשורות 155-159:
+        </p>
+
+        <div class="code-label">
+          <span>לפני השינוי</span>
+          <span>הכפתור קורא ל-nextSong()</span>
+        </div>
+        <div class="code-box">
+          <div class="code-topbar"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+          <pre>else if (pressed)
+{
+    Serial.println("[Button] NEXT pressed");
+<span class="removed-line">    jukeboxUI.nextSong();</span>
+}</pre>
+        </div>
+
+        <p>
+          שנו את השורה <code class="inline">jukeboxUI.nextSong();</code> לשורה הבאה:
+        </p>
+
+        <div class="code-label">
+          <span>אחרי השינוי</span>
+          <span class="action">השורה הירוקה היא השורה החדשה</span>
+        </div>
+        <div class="code-box">
+          <div class="code-topbar"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+          <pre>else if (pressed)
+{
+    Serial.println("[Button] NEXT pressed");
+<span class="changed-line">    jukeboxUI.previousSong();</span>
+}</pre>
+        </div>
+
+        <div class="callout note">
+          <div class="callout-icon">📝</div>
+          <div>
+            <h4>שינוי אופציונלי</h4>
+            <p>
+              אפשר לשנות גם את הטקסט של <code class="inline">Serial.println</code> כך שישקף
+              את הפעולה החדשה. השינוי הזה משפיע רק על הלוג ולא על התנהגות הכפתור.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="step">
+      <div class="step-head">
+        <div class="step-number">4</div>
+        <div class="step-head-copy">
+          <h3>קומפילציה, העלאה ובדיקה</h3>
+          <div class="step-file">PlatformIO / ESP32-S3</div>
+        </div>
+      </div>
+      <div class="step-body">
+        <p>בצעו את הפעולות לפי הסדר:</p>
+
+        <div class="checklist">
+          <div class="check">
+            <div class="check-mark">✓</div>
+            <div>שמרו את כל שלושת הקבצים.</div>
+          </div>
+
+          <div class="check">
+            <div class="check-mark">✓</div>
+            <div>
+              הריצו קומפילציה ובדקו שאין שגיאות:
+              <span class="command">pio run -e esp32s3</span>
+            </div>
+          </div>
+
+          <div class="check">
+            <div class="check-mark">✓</div>
+            <div>
+              אם הכול תקין, העלו את הקוד לבקר:
+              <span class="command">pio run -e esp32s3 -t upload</span>
+            </div>
+          </div>
+
+          <div class="check">
+            <div class="check-mark">✓</div>
+            <div>
+              לחצו על כפתור NEXT הפיזי. הג'וקבוקס אמור לעבור לשיר הקודם ברשימה,
+              ולא לשיר הבא.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel important">
+      <div class="icon-title">
+        <div class="icon" style="background:#ffd8d8;">⚠️</div>
+        <div>
+          <h2>הערה חשובה</h2>
+        </div>
+      </div>
+      <p>
+        התרגיל משנה רק את כפתור ה-NEXT המחובר ל-<code class="inline">GPIO45</code>.
+        כפתור PLAY/PAUSE המחובר ל-<code class="inline">GPIO46</code> ממשיך לעבוד כרגיל.
+      </p>
+      <p>
+        כאשר משחקים בפינבול או בהוקי אוויר מלשונית GAMES, שני הכפתורים משמשים כפקדי
+        משחק ולא כ-NEXT או PLAY/PAUSE. השינוי משפיע רק כשלא משחקים במשחק.
+        ניתן לראות זאת בתנאי
+        <code class="inline">if (jukeboxUI.isPlayingGame())</code>
+        בקובץ <code class="inline">main.cpp</code>.
+      </p>
+    </section>
+
+    <section class="bonus">
+      <div class="icon-title">
+        <div class="icon">🚀</div>
+        <div>
+          <h2>אתגר בונוס - לא חובה</h2>
+        </div>
+      </div>
+      <p>
+        נסו לגרום לאותו כפתור להתנהג אחרת לפי משך הלחיצה:
+        לחיצה קצרה תעביר לשיר הבא, ולחיצה ארוכה תעביר לשיר הקודם.
+      </p>
+      <p>
+        רמז: מדדו את זמן הלחיצה בעזרת <code class="inline">millis()</code>,
+        בדומה למנגנון הדיבאונס שכבר קיים לכפתורים בקובץ
+        <code class="inline">main.cpp</code>.
+      </p>
+    </section>
+
+    <footer class="footer">
+      מדריך עבודה לסדנת ג'וקבוקס - ניתן לפתוח בדפדפן, להקרין או להדפיס
+    </footer>
+  </main>
+</body>
+</html>

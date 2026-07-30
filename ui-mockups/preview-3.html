@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>תרגיל סדנה - בחירת צבע קבוע ל-LED</title>
+  <style>
+    :root {
+      --bg: #f4f7fb;
+      --paper: #ffffff;
+      --ink: #183047;
+      --muted: #5f7387;
+      --primary: #1565c0;
+      --primary-soft: #e8f1fb;
+      --accent: #00a884;
+      --accent-soft: #e5f8f3;
+      --warning: #f39c12;
+      --warning-soft: #fff5df;
+      --danger: #d64545;
+      --danger-soft: #fff0f0;
+      --bonus: #7b52c7;
+      --bonus-soft: #f1ebff;
+      --code-bg: #111827;
+      --code-ink: #e5edf7;
+      --line: #dbe5ef;
+      --shadow: 0 14px 36px rgba(31, 56, 82, 0.10);
+      --radius: 22px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at top right, rgba(21, 101, 192, 0.10), transparent 28%),
+        radial-gradient(circle at bottom left, rgba(0, 168, 132, 0.10), transparent 24%),
+        var(--bg);
+      color: var(--ink);
+      font-family: Arial, "Noto Sans Hebrew", sans-serif;
+      line-height: 1.65;
+    }
+
+    .page {
+      width: min(1120px, calc(100% - 28px));
+      margin: 28px auto 48px;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(135deg, #512da8, #1565c0 58%, #00a884);
+      color: #fff;
+      border-radius: 28px;
+      padding: 38px 38px 34px;
+      box-shadow: var(--shadow);
+    }
+
+    .hero::before,
+    .hero::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.10);
+    }
+
+    .hero::before {
+      width: 190px;
+      height: 190px;
+      left: -56px;
+      top: -74px;
+    }
+
+    .hero::after {
+      width: 120px;
+      height: 120px;
+      right: 56px;
+      bottom: -56px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.16);
+      border: 1px solid rgba(255,255,255,0.24);
+      border-radius: 999px;
+      padding: 7px 13px;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(30px, 5vw, 54px);
+      line-height: 1.15;
+      letter-spacing: -0.6px;
+    }
+
+    .hero p {
+      margin: 0;
+      max-width: 850px;
+      font-size: 18px;
+      color: rgba(255,255,255,0.92);
+    }
+
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    .hero-tag {
+      background: rgba(255,255,255,0.13);
+      border: 1px solid rgba(255,255,255,0.22);
+      border-radius: 14px;
+      padding: 8px 12px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .section { margin-top: 24px; }
+
+    .intro-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 18px;
+    }
+
+    .panel {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: 0 8px 22px rgba(31, 56, 82, 0.06);
+    }
+
+    .panel h2,
+    .panel h3 {
+      margin-top: 0;
+      line-height: 1.25;
+    }
+
+    .goal { border-top: 6px solid var(--accent); }
+    .files { border-top: 6px solid var(--primary); }
+    .important { border-top: 6px solid var(--danger); margin-top: 22px; }
+
+    .icon-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .icon {
+      width: 42px;
+      height: 42px;
+      flex: 0 0 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 13px;
+      font-size: 22px;
+      background: var(--primary-soft);
+    }
+
+    .goal .icon { background: var(--accent-soft); }
+
+    .file-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .file-item {
+      border: 1px solid var(--line);
+      border-radius: 15px;
+      padding: 13px 14px;
+      background: #fbfdff;
+    }
+
+    .file-name {
+      direction: ltr;
+      unicode-bidi: embed;
+      display: inline-block;
+      font-family: Consolas, "Courier New", monospace;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 4px;
+    }
+
+    .roadmap {
+      display: flex;
+      align-items: stretch;
+      gap: 10px;
+      margin-top: 18px;
+      flex-wrap: wrap;
+    }
+
+    .roadmap span {
+      flex: 1 1 180px;
+      text-align: center;
+      background: var(--primary-soft);
+      border: 1px solid #cbdff5;
+      border-radius: 14px;
+      padding: 10px;
+      font-weight: 700;
+    }
+
+    .steps-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 32px 2px 14px;
+    }
+
+    .steps-title h2 { margin: 0; font-size: 28px; }
+    .steps-title .small { color: var(--muted); font-size: 14px; }
+
+    .step {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 0;
+      overflow: hidden;
+      margin-bottom: 18px;
+      box-shadow: 0 8px 22px rgba(31, 56, 82, 0.06);
+      break-inside: avoid;
+    }
+
+    .step-head {
+      display: grid;
+      grid-template-columns: 70px 1fr;
+      align-items: stretch;
+      min-height: 88px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .step-number {
+      display: grid;
+      place-items: center;
+      background: linear-gradient(180deg, var(--primary), #0d47a1);
+      color: #fff;
+      font-size: 34px;
+      font-weight: 900;
+    }
+
+    .step-head-copy {
+      padding: 18px 22px 16px;
+      background: linear-gradient(90deg, #ffffff, #f8fbff);
+    }
+
+    .step-head h3 { margin: 0 0 5px; font-size: 23px; }
+
+    .step-file {
+      direction: ltr;
+      unicode-bidi: embed;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-family: Consolas, "Courier New", monospace;
+      color: var(--primary);
+      background: var(--primary-soft);
+      border-radius: 10px;
+      padding: 4px 9px;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .step-body { padding: 22px; }
+    .step-body p:first-child { margin-top: 0; }
+
+    .code-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin: 15px 0 8px;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .code-label .action { color: var(--accent); }
+
+    .code-box {
+      direction: ltr;
+      text-align: left;
+      unicode-bidi: embed;
+      background: var(--code-bg);
+      color: var(--code-ink);
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid #27344a;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+      margin: 8px 0 16px;
+    }
+
+    .code-topbar {
+      height: 34px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 0 13px;
+      background: #0b1220;
+      border-bottom: 1px solid #27344a;
+    }
+
+    .dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #46556c;
+    }
+
+    pre {
+      margin: 0;
+      padding: 15px 17px;
+      overflow-x: auto;
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 15px;
+      line-height: 1.55;
+      tab-size: 4;
+      white-space: pre;
+    }
+
+    .changed-line {
+      display: block;
+      margin: 0 -17px;
+      padding: 0 14px 0 17px;
+      background: rgba(0, 168, 132, 0.18);
+      border-left: 4px solid #35d3ad;
+      color: #d9fff5;
+    }
+
+    .old-line {
+      display: block;
+      margin: 0 -17px;
+      padding: 0 14px 0 17px;
+      background: rgba(214, 69, 69, 0.18);
+      border-left: 4px solid #ff7f7f;
+      color: #ffd6d6;
+    }
+
+    code.inline {
+      direction: ltr;
+      unicode-bidi: embed;
+      display: inline-block;
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 0.95em;
+      color: #0d47a1;
+      background: #edf4fc;
+      border-radius: 7px;
+      padding: 1px 6px;
+    }
+
+    .callout {
+      display: grid;
+      grid-template-columns: 42px 1fr;
+      gap: 12px;
+      border-radius: 16px;
+      padding: 15px 16px;
+      margin: 15px 0 0;
+      border: 1px solid;
+      break-inside: avoid;
+    }
+
+    .callout-icon {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 13px;
+      font-size: 22px;
+    }
+
+    .callout h4 { margin: 0 0 4px; font-size: 17px; }
+    .callout p { margin: 0; }
+
+    .tip { background: var(--warning-soft); border-color: #f4d394; }
+    .tip .callout-icon { background: #ffe6ad; }
+    .note { background: var(--primary-soft); border-color: #bdd6f1; }
+    .note .callout-icon { background: #d7e8fa; }
+    .warning { background: var(--danger-soft); border-color: #f2bcbc; }
+    .warning .callout-icon { background: #ffd8d8; }
+
+    .format-compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .format-card {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 16px;
+      background: #fbfdff;
+    }
+
+    .format-card h3 { margin: 0 0 8px; font-size: 18px; }
+    .format-card.screen { border-top: 5px solid #1976d2; }
+    .format-card.led { border-top: 5px solid #8e44ad; }
+
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .color-card {
+      display: grid;
+      grid-template-columns: 54px 1fr;
+      align-items: center;
+      gap: 12px;
+      border: 1px solid var(--line);
+      background: #fbfdff;
+      border-radius: 16px;
+      padding: 11px;
+      break-inside: avoid;
+    }
+
+    .swatch {
+      width: 54px;
+      height: 54px;
+      border-radius: 14px;
+      border: 1px solid rgba(0,0,0,0.14);
+      box-shadow: inset 0 0 0 2px rgba(255,255,255,0.25);
+    }
+
+    .color-name { font-weight: 800; margin-bottom: 3px; }
+    .color-code {
+      direction: ltr;
+      unicode-bidi: embed;
+      display: inline-block;
+      font-family: Consolas, "Courier New", monospace;
+      background: #edf4fc;
+      color: #0d47a1;
+      border-radius: 7px;
+      padding: 2px 7px;
+      font-size: 14px;
+    }
+
+    .checklist {
+      display: grid;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .check {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      background: #f8fbfd;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px 13px;
+    }
+
+    .check-mark {
+      width: 24px;
+      height: 24px;
+      flex: 0 0 24px;
+      display: grid;
+      place-items: center;
+      border-radius: 7px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-weight: 900;
+    }
+
+    .command {
+      direction: ltr;
+      unicode-bidi: embed;
+      display: block;
+      margin-top: 6px;
+      padding: 8px 10px;
+      background: var(--code-bg);
+      color: #dff7ef;
+      border-radius: 9px;
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 14px;
+      overflow-wrap: anywhere;
+    }
+
+    .bonus {
+      margin-top: 22px;
+      background: linear-gradient(135deg, var(--bonus-soft), #ffffff);
+      border: 2px dashed #b59ce8;
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: 0 8px 22px rgba(73, 48, 120, 0.08);
+      break-inside: avoid;
+    }
+
+    .bonus .icon { background: #e4d9ff; }
+    .bonus h2 { margin: 0 0 8px; color: #56359f; }
+    .bonus ol { margin-bottom: 0; }
+
+    .footer {
+      text-align: center;
+      color: var(--muted);
+      padding: 24px 10px 10px;
+      font-size: 13px;
+    }
+
+    @media (max-width: 800px) {
+      .intro-grid,
+      .format-compare { grid-template-columns: 1fr; }
+      .color-grid { grid-template-columns: 1fr 1fr; }
+      .hero { padding: 28px 24px; }
+      .step-head { grid-template-columns: 56px 1fr; }
+      .step-number { font-size: 28px; }
+      .step-head-copy { padding: 15px 16px; }
+      .step-body { padding: 17px; }
+      pre { font-size: 13px; }
+    }
+
+    @media (max-width: 540px) {
+      .color-grid { grid-template-columns: 1fr; }
+    }
+
+    @media print {
+      @page { size: A4; margin: 12mm; }
+      body {
+        background: #fff;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .page { width: 100%; margin: 0; }
+      .hero, .panel, .step, .bonus { box-shadow: none; }
+      .hero { border-radius: 18px; }
+      .step, .callout, .bonus, .panel, .color-card { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="hero">
+      <div class="eyebrow">🌈 תרגיל סדנה - LED ו-NeoPixel</div>
+      <h1>בחירת צבע קבוע ל-LED במקום קשת בענן</h1>
+      <p>
+        נחליף את אפקט קשת הבענן של ה-LED הצבעוני בצבע קבוע אחד לבחירתכם.
+        לא משנים מתי ה-LED דולק, אלא רק באיזה צבע הוא מאיר.
+      </p>
+      <div class="hero-tags">
+        <span class="hero-tag">2 שלבים</span>
+        <span class="hero-tag">קובץ אחד</span>
+        <span class="hero-tag">NeoPixel WS2812</span>
+        <span class="hero-tag">ללא שינוי בחומרה</span>
+      </div>
+    </header>
+
+    <section class="section intro-grid">
+      <article class="panel goal">
+        <div class="icon-title">
+          <div class="icon">🎯</div>
+          <div><h2>המטרה</h2></div>
+        </div>
+        <p>
+          כרגע, ה-LED הצבעוני דולק בזמן נגינה, או תמיד כאשר מצב ה-LED ב-SETTINGS
+          מוגדר ל-ALWAYS, ומשנה צבע ברציפות כמו קשת בענן. במשימה הזו נחליף אותו
+          בצבע קבוע אחד לבחירתכם.
+        </p>
+        <div class="roadmap">
+          <span>1. בוחרים צבע</span>
+          <span>2. מחליפים את הקוד</span>
+          <span>3. מקמפלים ומעלים</span>
+          <span>4. בודקים ב-ALWAYS</span>
+        </div>
+      </article>
+
+      <article class="panel files">
+        <div class="icon-title">
+          <div class="icon">📁</div>
+          <div><h2>איפה זה מוגדר?</h2></div>
+        </div>
+        <div class="file-list">
+          <div class="file-item">
+            <div class="file-name">src/StatusLed.cpp</div>
+            <div>הקובץ היחיד שצריך לשנות.</div>
+          </div>
+          <div class="file-item">
+            <div class="file-name">StatusLed::update()</div>
+            <div>הפונקציה שמתעדכנת שוב ושוב וקובעת מה יוצג ב-LED.</div>
+          </div>
+          <div class="file-item">
+            <div class="file-name">_hue += HueStepPerTick;</div>
+            <div>השורה שמקדמת את גוון הצבע ויוצרת את תנועת הקשת.</div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="panel important">
+      <div class="icon-title">
+        <div class="icon" style="background:#ffd8d8;">⚠️</div>
+        <div><h2>זה לא אותו פורמט צבע כמו במסך</h2></div>
+      </div>
+      <p>
+        בתרגילים של המסך השתמשנו ב-RGB565, למשל <code class="inline">0x07FF</code>.
+        ה-LED כאן הוא NeoPixel מסוג WS2812 ומשתמש בשלושה מספרים נפרדים:
+        אדום, ירוק וכחול. כל מספר הוא בין 0 ל-255.
+      </p>
+      <div class="format-compare">
+        <div class="format-card screen">
+          <h3>🖥️ צבע במסך</h3>
+          <p>פורמט RGB565</p>
+          <code class="inline">0x07FF</code>
+        </div>
+        <div class="format-card led">
+          <h3>💡 צבע ב-NeoPixel</h3>
+          <p>שלושה ערכי RGB</p>
+          <code class="inline">255, 0, 0</code>
+        </div>
+      </div>
+    </section>
+
+    <div class="steps-title">
+      <h2>שלבי העבודה</h2>
+      <div class="small">שנו רק את צבע ה-LED, בלי לשנות את מצב AUTO או ALWAYS</div>
+    </div>
+
+    <section class="step">
+      <div class="step-head">
+        <div class="step-number">1</div>
+        <div class="step-head-copy">
+          <h3>בחרו צבע קבוע והחליפו את הקוד</h3>
+          <div class="step-file">src/StatusLed.cpp</div>
+        </div>
+      </div>
+      <div class="step-body">
+        <p>
+          פתחו את <code class="inline">src/StatusLed.cpp</code> ומצאו בתוך הפונקציה
+          <code class="inline">update()</code> את קטע הקוד הבא:
+        </p>
+
+        <div class="code-label">
+          <span>לפני השינוי</span>
+          <span>הצבע מחושב לפי _hue המשתנה</span>
+        </div>
+        <div class="code-box">
+          <div class="code-topbar"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+          <pre>_pixel-&gt;setPixelColor(
+    0,
+<span class="old-line">    _pixel-&gt;gamma32(_pixel-&gt;ColorHSV(_hue)));</span></pre>
+        </div>
+
+        <p>
+          החליפו את השורות בקוד הבא. הדוגמה משתמשת באדום מלא:
+        </p>
+
+        <div class="code-label">
+          <span>אחרי השינוי</span>
+          <span class="action">המספרים בסוגריים קובעים את הצבע</span>
+        </div>
+        <div class="code-box">
+          <div class="code-topbar"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+          <pre>_pixel-&gt;setPixelColor(
+    0,
+<span class="changed-line">    _pixel-&gt;gamma32(_pixel-&gt;Color(255, 0, 0)));</span></pre>
+        </div>
+
+        <div class="callout tip">
+          <div class="callout-icon">💡</div>
+          <div>
+            <h4>מה מייצגים שלושת המספרים?</h4>
+            <p>
+              הסדר הוא אדום, ירוק, כחול. לדוגמה,
+              <code class="inline">255, 0, 0</code> הוא אדום מלא,
+              ו-<code class="inline">0, 0, 255</code> הוא כחול מלא.
+            </p>
+          </div>
+        </div>
+
+        <div class="callout note">
+          <div class="callout-icon">📝</div>
+          <div>
+            <h4>אין צורך למחוק את שורת ה-hue</h4>
+            <p>
+              אפשר להשאיר את <code class="inline">_hue += HueStepPerTick;</code> כפי שהיא.
+              לאחר המעבר ל-<code class="inline">Color()</code> קבוע, הערך פשוט לא ישפיע על
+              הצבע שמוצג.
+            </p>
+          </div>
+        </div>
+
+        <h3 style="margin-top:26px;">טבלת צבעים מוכנה להעתקה</h3>
+        <p>בחרו צבע אחד והכניסו את שלושת המספרים בתוך <code class="inline">Color(...)</code>.</p>
+
+        <div class="color-grid">
+          <div class="color-card"><div class="swatch" style="background:rgb(255,0,0);"></div><div><div class="color-name">אדום</div><span class="color-code">255, 0, 0</span></div></div>
+          <div class="color-card"><div class="swatch" style="background:rgb(0,255,0);"></div><div><div class="color-name">ירוק</div><span class="color-code">0, 255, 0</span></div></div>
+          <div class="color-card"><div class="swatch" style="background:rgb(0,0,255);"></div><div><div class="color-name">כחול</div><span class="color-code">0, 0, 255</span></div></div>
+          <div class="color-card"><div class="swatch" style="background:rgb(255,255,0);"></div><div><div class="color-name">צהוב</div><span class="color-code">255, 255, 0</span></div></div>
+          <div class="color-card"><div class="swatch" style="background:rgb(255,0,150);"></div><div><div class="color-name">ורוד</div><span class="color-code">255, 0, 150</span></div></div>
+          <div class="color-card"><div class="swatch" style="background:rgb(255,100,0);"></div><div><div class="color-name">כתום</div><span class="color-code">255, 100, 0</span></div></div>
+          <div class="color-card"><div class="swatch" style="background:rgb(0,255,200);"></div><div><div class="color-name">טורקיז</div><span class="color-code">0, 255, 200</span></div></div>
+          <div class="color-card"><div class="swatch" style="background:rgb(150,0,255);"></div><div><div class="color-name">סגול</div><span class="color-code">150, 0, 255</span></div></div>
+          <div class="color-card"><div class="swatch" style="background:rgb(255,255,255);"></div><div><div class="color-name">לבן</div><span class="color-code">255, 255, 255</span></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="step">
+      <div class="step-head">
+        <div class="step-number">2</div>
+        <div class="step-head-copy">
+          <h3>קומפילציה, העלאה ובדיקה</h3>
+          <div class="step-file">PlatformIO / ESP32-S3</div>
+        </div>
+      </div>
+      <div class="step-body">
+        <p>בצעו את הפעולות לפי הסדר:</p>
+
+        <div class="checklist">
+          <div class="check">
+            <div class="check-mark">✓</div>
+            <div>שמרו את הקובץ <code class="inline">src/StatusLed.cpp</code>.</div>
+          </div>
+
+          <div class="check">
+            <div class="check-mark">✓</div>
+            <div>
+              הריצו קומפילציה ובדקו שאין שגיאות:
+              <span class="command">pio run -e esp32s3</span>
+            </div>
+          </div>
+
+          <div class="check">
+            <div class="check-mark">✓</div>
+            <div>
+              אם הכול תקין, העלו את הקוד לבקר:
+              <span class="command">pio run -e esp32s3 -t upload</span>
+            </div>
+          </div>
+
+          <div class="check">
+            <div class="check-mark">✓</div>
+            <div>
+              היכנסו ל-SETTINGS, פתחו LED ובחרו ALWAYS. כך אפשר לראות את ה-LED
+              גם בלי להפעיל שיר.
+            </div>
+          </div>
+
+          <div class="check">
+            <div class="check-mark">✓</div>
+            <div>ודאו שה-LED מציג את הצבע הקבוע שבחרתם ולא קשת בענן.</div>
+          </div>
+        </div>
+
+        <div class="callout warning">
+          <div class="callout-icon">⚠️</div>
+          <div>
+            <h4>AUTO ו-ALWAYS עדיין פועלים כרגיל</h4>
+            <p>
+              התרגיל משנה רק את הצבע. במצב AUTO ה-LED יידלק בזמן נגינה,
+              ובמצב ALWAYS הוא יישאר דולק כל הזמן.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="bonus">
+      <div class="icon-title">
+        <div class="icon">🚀</div>
+        <div><h2>אתגר בונוס - לא חובה</h2></div>
+      </div>
+      <ol>
+        <li>
+          <strong>שינוי מהירות הקשת:</strong> אם אתם מעדיפים להשאיר את אפקט הקשת,
+          שנו את הערך של <code class="inline">HueStepPerTick</code> בראש הקובץ.
+          ערך גדול יותר ייצור קשת מהירה יותר, וערך קטן יותר ייצור קשת איטית יותר.
+        </li>
+        <li style="margin-top:10px;">
+          <strong>אתגר מתקדם:</strong> נסו לשנות את צבע ה-LED לפי עוצמת הווליום.
+          חפשו כיצד <code class="inline">JukeboxUI</code> מקבל את הווליום הנוכחי
+          מ-<code class="inline">AudioController</code> ומציג אותו באחוזים.
+        </li>
+      </ol>
+    </section>
+
+    <footer class="footer">
+      מדריך עבודה לסדנת ג'וקבוקס - ניתן לפתוח בדפדפן, להקרין או להדפיס
+    </footer>
+  </main>
+</body>
+</html>

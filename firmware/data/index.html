@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>ESP32 Jukebox</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<div class="app">
+
+  <!-- ── Header ── -->
+  <header class="header">
+    <div class="header-title">
+      <span class="header-icon">&#127925;</span>
+      <span>ESP32 Jukebox</span>
+    </div>
+    <div id="status-chip" class="chip chip-offline">מנותק</div>
+  </header>
+
+  <!-- ── Now Playing ── -->
+  <section class="card card-player">
+    <div class="now-playing-label">מתנגן עכשיו</div>
+    <div id="current-song" class="current-song-name">&#8212;</div>
+    <div id="play-status"  class="play-status-text">עצור</div>
+
+    <div class="controls">
+      <button class="btn btn-ctrl" onclick="control('previous')" title="הקודם">&#9198;</button>
+      <button class="btn btn-play" id="btn-play" onclick="togglePlay()" title="נגן/עצור">&#9654;</button>
+      <button class="btn btn-ctrl" onclick="control('stop')" title="עצור">&#9209;</button>
+      <button class="btn btn-ctrl" onclick="control('next')" title="הבא">&#9197;</button>
+    </div>
+
+    <div class="volume-row">
+      <span class="vol-icon">&#128266;</span>
+      <input type="range" id="volume-slider" class="slider" min="0" max="30" value="18"
+             oninput="onVolumeInput(this.value)">
+      <span id="vol-display" class="vol-number">18</span>
+    </div>
+  </section>
+
+  <!-- ── Song List ── -->
+  <section class="card">
+    <div class="card-header">
+      <h2 class="card-title">&#127925; שירים בכרטיס SD</h2>
+      <button class="btn btn-sm" onclick="loadSongs()">&#8635; רענן</button>
+    </div>
+    <div id="song-count-badge" class="badge" style="display:none"></div>
+    <div id="song-list" class="song-list">
+      <p class="hint">טוען רשימה...</p>
+    </div>
+  </section>
+
+  <!-- ── Upload ── -->
+  <section class="card">
+    <h2 class="card-title">&#8593; העלאת שירים</h2>
+    <p class="hint">MP3 או WAV בלבד. הקובץ נשמר ישירות לכרטיס SD.</p>
+
+    <label class="upload-zone" id="upload-zone">
+      <input type="file" id="file-input" accept=".mp3,.wav" multiple
+             onchange="onFilesChosen(this.files)" style="display:none">
+      <span class="upload-icon">&#128190;</span>
+      <span>בחר קובץ או גרור לכאן</span>
+    </label>
+
+    <div id="upload-progress-wrap" style="display:none">
+      <div class="progress-bar-bg">
+        <div id="progress-fill" class="progress-bar-fill"></div>
+      </div>
+      <div id="progress-label" class="progress-label">0%</div>
+    </div>
+    <div id="upload-status" class="upload-status"></div>
+  </section>
+
+  <!-- ── Playlists ── -->
+  <section class="card">
+    <div class="card-header">
+      <h2 class="card-title">&#128195; פלייליסטים</h2>
+      <button class="btn btn-sm" onclick="loadPlaylists()">&#8635;</button>
+    </div>
+    <div id="playlist-list" class="playlist-list">
+      <p class="hint">טוען...</p>
+    </div>
+  </section>
+
+  <!-- ── System Status ── -->
+  <section class="card card-sm">
+    <h2 class="card-title">&#128202; מצב מערכת</h2>
+    <div class="status-grid">
+      <div class="status-cell">
+        <span class="status-label">כרטיס SD</span>
+        <span id="sd-status" class="status-val">&#8212;</span>
+      </div>
+      <div class="status-cell">
+        <span class="status-label">שירים</span>
+        <span id="sd-song-count" class="status-val">&#8212;</span>
+      </div>
+      <div class="status-cell">
+        <span class="status-label">זיכרון חופשי</span>
+        <span id="free-heap" class="status-val">&#8212;</span>
+      </div>
+      <div class="status-cell">
+        <span class="status-label">זמן פעולה</span>
+        <span id="uptime" class="status-val">&#8212;</span>
+      </div>
+      <div class="status-cell">
+        <span class="status-label">IP</span>
+        <span class="status-val">192.168.4.1</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Logs ── -->
+  <section class="card card-sm">
+    <div class="card-header">
+      <h2 class="card-title">&#128196; לוג</h2>
+      <button class="btn btn-sm" onclick="loadLogs()">&#8635;</button>
+    </div>
+    <div id="logs" class="logs"></div>
+  </section>
+
+</div><!-- .app -->
+
+<script src="/app.js"></script>
+</body>
+</html>
