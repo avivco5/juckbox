@@ -40,6 +40,8 @@ Standalone jukebox running on an ESP32-S3 with a 3.5" QSPI touchscreen, a microS
 
 Pins are currently **hardcoded per module** (display, touch, SD, audio each define their own pins at the top of their `.cpp` file) rather than centralized in `config.h` — see [Known Limitations](#known-limitations). To rewire the board, edit the file for the subsystem you're changing.
 
+![Board connector layout](docs/board-wiring.png)
+
 ### Display — QSPI ([src/DisplayDriver.cpp](src/DisplayDriver.cpp))
 
 | Signal | GPIO |
