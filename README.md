@@ -24,6 +24,10 @@ This repository is the open-source release of the project: firmware, enclosure/c
 3. Print/cut the enclosure from [hardware/enclosure/](hardware/enclosure).
 4. Build and flash the firmware with [PlatformIO](https://platformio.org/) — see the firmware README for exact steps.
 
+## Affiliate Disclosure
+
+Some purchase links in the [BOM](hardware/bom) may be AliExpress affiliate links (marked **Affiliate**). If you buy through a marked link, the project maintainer may receive a small commission at no additional cost to you. Affiliate links never change which component is recommended, and using them is entirely optional — every part in the BOM also lists its plain specification so you can search and buy it independently. See [hardware/bom/README.md](hardware/bom/README.md) for details.
+
 ## License
 
 Licensed under the [GNU General Public License v3.0](LICENSE).
