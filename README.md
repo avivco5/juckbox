@@ -35,7 +35,9 @@ This repository is the open-source release of the project: firmware, enclosure/c
 
 ### Demo video
 
-<video src="media/demo.mp4" controls width="480">Your browser doesn't support embedded video — <a href="media/demo.mp4">watch/download it directly</a>.</video>
+[![Watch the demo video](media/build-05-finished.jpg)](media/demo.mp4)
+
+*(GitHub doesn't inline-embed video committed to a repo — click the image above, or go straight to [`media/demo.mp4`](media/demo.mp4), and GitHub's file viewer will play it.)*
 
 ## Getting started
 
