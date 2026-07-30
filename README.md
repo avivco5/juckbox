@@ -20,18 +20,20 @@ This repository is the open-source release of the project: firmware, enclosure/c
 
 ## Gallery
 
-<table>
-<tr>
-<td><img src="media/build-04-pacman.jpg" width="260" alt="Finished Pac-Man themed build, running with backlit arcade buttons"><br>Pac-Man theme, running</td>
-<td><img src="media/build-05-finished.jpg" width="260" alt="Finished build painted as Squidward's pineapple house"><br>Squidward's house theme</td>
-<td><img src="media/build-03-pineapple.jpg" width="260" alt="Pineapple-themed build in progress"><br>Pineapple theme, in progress</td>
-</tr>
-<tr>
-<td><img src="media/build-02-raw-enclosure.jpg" width="260" alt="Raw laser-cut enclosure before painting"><br>Raw laser-cut enclosure</td>
-<td><img src="media/build-01-painting.jpg" width="260" alt="Hand-painting a laser-cut enclosure during a build workshop"><br>Painting at a build workshop</td>
-<td></td>
-</tr>
-</table>
+![Finished Pac-Man themed build, running with backlit arcade buttons](media/build-04-pacman.jpg)
+*Pac-Man theme, running*
+
+![Finished build painted as Squidward's pineapple house](media/build-05-finished.jpg)
+*Squidward's house theme*
+
+![Pineapple-themed build in progress](media/build-03-pineapple.jpg)
+*Pineapple theme, in progress*
+
+![Raw laser-cut enclosure before painting](media/build-02-raw-enclosure.jpg)
+*Raw laser-cut enclosure*
+
+![Hand-painting a laser-cut enclosure during a build workshop](media/build-01-painting.jpg)
+*Painting at a build workshop*
 
 ### Demo video
 
